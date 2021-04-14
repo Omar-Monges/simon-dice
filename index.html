@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,11 +9,17 @@
 </head>
 <body>
     <div class="game-board">
-        <div class="game-board__top-left color left"></div>
-        <div class="game-board__top-right color right"></div>
-        <div class="game-board__bottom-left color left"></div>
-        <div class="game-board__bottom-right color right"></div>
-        <button class="game-board__button-start">Empezar a jugar</button>
+        <div id="topLeft"
+        class="game-board__top-left color left"></div>
+        <div id="topRight"
+        class="game-board__top-right color right"></div>
+        <div id="bottomLeft"
+        class="game-board__bottom-left color left"></div>
+        <div id="bottomRight"
+        class="game-board__bottom-right color right"></div>
+        <button id="btnInit"
+        class="game-board__button-start"
+        onclick="startGame()">Empezar a jugar</button>
     </div>
     <script src="./js/logica.js"></script>
 </body>

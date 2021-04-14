@@ -33,25 +33,25 @@ body {
 .game-board__top-left {
     background-color: #22a6b3;
 }
-.game-board__top-left .light{
+.game-board__top-left.light{
     background-color: #7ed6df;
 }
 .game-board__top-right {
     background-color: #be2edd;
 }
-.game-board__top-right .light {
+.game-board__top-right.light {
     background-color: #e056fd;
 }
 .game-board__bottom-left {
     background-color: #f0932b;
 }
-.game-board__bottom-left .light {
+.game-board__bottom-left.light {
     background-color: #ffbe76;
 }
 .game-board__bottom-right {
     background-color: #6ab04c
 }
-.game-board__bottom-right .light {
+.game-board__bottom-right.light {
     background-color: #badc58;
 }
 .game-board__button-start {
@@ -63,4 +63,7 @@ body {
     background-color: #ecf0f1;
     color: #2c3e50;
     font-size: 2.9rem;
+}
+.hide {
+    display: none;
 }
