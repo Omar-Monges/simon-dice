@@ -10,6 +10,7 @@ class Game {
         this.nextLevel()
     }
     getStarted() {
+        // this.selectColor = this.selectColor.bind(this)
         btnInit.classList.add('hide');
         this.level = 1;
         this.colors = {
@@ -24,8 +25,9 @@ class Game {
     }
     nextLevel() {
         this.lightUpSequence();
+        this.addEventClick()
     }
-    transformColorNumber(number) {
+    transformNumberName(number) {
         switch (number) {
             case 0:
                 return 'topLeft';
@@ -37,9 +39,21 @@ class Game {
                 return 'bottomRight';
         }
     }
+    transformNameNumber(name) {
+        switch (name) {
+            case 'topLeft':
+                return 0;
+            case 'topRight':
+                return 1;
+            case 'bottomLeft':
+                return 2;
+            case 'bottomRight':
+                return 3;
+        }
+    }
     lightUpSequence() {
         for (let i = 0; i < this.level; i++) {
-            const color = this.transformColorNumber(this.random[i]);
+            const color = this.transformNumberName(this.random[i]);
             setTimeout(() => {
                 this.lightUpColor(color)
                 console.log(color);
@@ -52,6 +66,23 @@ class Game {
     }
     lightDownColor(color) {
         this.colors[color].classList.remove('light');
+    }
+    addEventClick() {
+        this.colors.topLeft.addEventListener('click', this.selectColor.bind(this));
+        this.colors.topRight.addEventListener('click', this.selectColor.bind(this));
+        this.colors.bottomLeft.addEventListener('click', this.selectColor.bind(this));
+        this.colors.bottomRight.addEventListener('click', this.selectColor.bind(this));
+    }
+    removeEventClick() {
+        this.colors.topLeft.removeEventListener('click', this.selectColor.bind(this));
+        this.colors.topRight.removeEventListener('click', this.selectColor.bind(this));
+        this.colors.bottomLeft.removeEventListener('click', this.selectColor.bind(this));
+        this.colors.bottomRight.removeEventListener('click', this.selectColor.bind(this));
+    }
+    selectColor(ev) {
+        const nameButton = ev.target.dataset.button;
+        const numberButton = this.transformNameNumber(nameButton);
+        this.lightUpColor(nameButton);
     }
 }
 let startGame = () => {
