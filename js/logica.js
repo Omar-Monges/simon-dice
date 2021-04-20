@@ -2,16 +2,19 @@ const topLeft = document.getElementById('topLeft');
 const topRight = document.getElementById('topRight');
 const bottomLeft = document.getElementById('bottomLeft');
 const bottomRight = document.getElementById('bottomRight');
-const btnInit = document.getElementById('btnInit')
+const btnInit = document.getElementById('btnInit');
+const LAST_LEVEL = 3;
 class Game {
     constructor() {
-        this.getStarted()
-        this.generatorRandom()
-        this.nextLevel()
+        this.getStarted = this.getStarted.bind(this);
+        this.getStarted();
+        this.generatorRandom();
+        setTimeout(this.nextLevel, 500);
     }
     getStarted() {
+        this.nextLevel = this.nextLevel.bind(this);
         // this.selectColor = this.selectColor.bind(this)
-        btnInit.classList.add('hide');
+        this.toggleBtnInit();
         this.level = 1;
         this.colors = {
             topLeft,
@@ -20,10 +23,18 @@ class Game {
             bottomRight,
         }
     }
+    toggleBtnInit() {
+        if (btnInit.classList.contains('hide')) {
+            btnInit.classList.remove('hide');
+        } else {
+            btnInit.classList.add('hide');
+        }
+    }
     generatorRandom() {
-        this.random = new Array(10).fill(0).map(n => Math.floor(Math.random() * 4))
+        this.random = new Array(LAST_LEVEL).fill(0).map(n => Math.floor(Math.random() * 4))
     }
     nextLevel() {
+        this.subLevel = 0;
         this.lightUpSequence();
         this.addEventClick()
     }
@@ -56,7 +67,7 @@ class Game {
             const color = this.transformNumberName(this.random[i]);
             setTimeout(() => {
                 this.lightUpColor(color)
-                console.log(color);
+                // console.log(color);
             }, 1000 * i);
         }
     }
@@ -79,10 +90,36 @@ class Game {
         this.colors.bottomLeft.removeEventListener('click', this.selectColor.bind(this));
         this.colors.bottomRight.removeEventListener('click', this.selectColor.bind(this));
     }
+    gameWin(){
+        swal('Platzi', 'Game win!!!', 'success')
+            .then(this.getStarted)
+    }
+    gameLose(){
+        swal('Platzi', 'Game lose!!!', 'error')
+            .then(() => {
+                this.removeEventClick();
+                this.getStarted();
+            })
+    }
     selectColor(ev) {
         const nameButton = ev.target.dataset.button;
-        const numberButton = this.transformNameNumber(nameButton);
+        let numberButton = this.transformNameNumber(nameButton);
+        console.log(numberButton);
         this.lightUpColor(nameButton);
+        if (numberButton === this.random[this.subLevel]) {
+            this.subLevel++;
+            if (this.subLevel === this.level) {
+                this.level++;
+                this.removeEventClick();
+                if (this.level === (LAST_LEVEL + 1)) {
+                    this.gameWin();
+                } else {
+                    setTimeout(this.nextLevel, 1500);
+                }
+            }
+        } else {
+            this.gameLose();
+        }
     }
 }
 let startGame = () => {
