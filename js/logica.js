@@ -3,7 +3,7 @@ const topRight = document.getElementById('topRight');
 const bottomLeft = document.getElementById('bottomLeft');
 const bottomRight = document.getElementById('bottomRight');
 const btnInit = document.getElementById('btnInit');
-const LAST_LEVEL = 3;
+const LAST_LEVEL = 10;
 class Game {
     constructor() {
         this.getStarted = this.getStarted.bind(this);
@@ -13,7 +13,7 @@ class Game {
     }
     getStarted() {
         this.nextLevel = this.nextLevel.bind(this);
-        // this.selectColor = this.selectColor.bind(this)
+        this.selectColor = this.selectColor.bind(this)
         this.toggleBtnInit();
         this.level = 1;
         this.colors = {
@@ -65,10 +65,7 @@ class Game {
     lightUpSequence() {
         for (let i = 0; i < this.level; i++) {
             const color = this.transformNumberName(this.random[i]);
-            setTimeout(() => {
-                this.lightUpColor(color)
-                // console.log(color);
-            }, 1000 * i);
+            setTimeout(() => this.lightUpColor(color), 1000 * i);
         }
     }
     lightUpColor(color) {
@@ -79,32 +76,20 @@ class Game {
         this.colors[color].classList.remove('light');
     }
     addEventClick() {
-        this.colors.topLeft.addEventListener('click', this.selectColor.bind(this));
-        this.colors.topRight.addEventListener('click', this.selectColor.bind(this));
-        this.colors.bottomLeft.addEventListener('click', this.selectColor.bind(this));
-        this.colors.bottomRight.addEventListener('click', this.selectColor.bind(this));
+        this.colors.topLeft.addEventListener('click', this.selectColor);
+        this.colors.topRight.addEventListener('click', this.selectColor);
+        this.colors.bottomLeft.addEventListener('click', this.selectColor);
+        this.colors.bottomRight.addEventListener('click', this.selectColor);
     }
     removeEventClick() {
-        this.colors.topLeft.removeEventListener('click', this.selectColor.bind(this));
-        this.colors.topRight.removeEventListener('click', this.selectColor.bind(this));
-        this.colors.bottomLeft.removeEventListener('click', this.selectColor.bind(this));
-        this.colors.bottomRight.removeEventListener('click', this.selectColor.bind(this));
-    }
-    gameWin(){
-        swal('Platzi', 'Game win!!!', 'success')
-            .then(this.getStarted)
-    }
-    gameLose(){
-        swal('Platzi', 'Game lose!!!', 'error')
-            .then(() => {
-                this.removeEventClick();
-                this.getStarted();
-            })
+        this.colors.topLeft.removeEventListener('click', this.selectColor);
+        this.colors.topRight.removeEventListener('click', this.selectColor);
+        this.colors.bottomLeft.removeEventListener('click', this.selectColor);
+        this.colors.bottomRight.removeEventListener('click', this.selectColor);
     }
     selectColor(ev) {
         const nameButton = ev.target.dataset.button;
-        let numberButton = this.transformNameNumber(nameButton);
-        console.log(numberButton);
+        const numberButton = this.transformNameNumber(nameButton);
         this.lightUpColor(nameButton);
         if (numberButton === this.random[this.subLevel]) {
             this.subLevel++;
@@ -120,6 +105,17 @@ class Game {
         } else {
             this.gameLose();
         }
+    }
+    gameWin(){
+        swal('Platzi', 'Game win!!!', 'success')
+            .then(this.getStarted)
+    }
+    gameLose(){
+        swal('Platzi', 'Game lose!!!', 'error')
+            .then(() => {
+                this.removeEventClick();
+                this.getStarted();
+            })
     }
 }
 let startGame = () => {
